@@ -1,38 +1,72 @@
 import telebot
-from chat import chat_from_sys
+from chat import chat_from_key
+from whisper import WhisperConfig, WhisperInference, download_models
+import argparse
 
 
-BOT_TOKEN = "6652869313:AAHlJq4_qQHN_mo_8fD_5EUNj7d8LGXBjTY"
-BOT_USERNAME = "@sahm_sahm_bot"
+parser = argparse.ArgumentParser()
+parser.add_argument('--bot_tok', type=str, help='your telegram bot token')
+parser.add_argument('--bot_name', type=str, help='your telegram bot name')
+parser.add_argument('--chat_tok', type=str, help='Open Ai ChatGpt Api token')
+parser.add_argument('--voice_model_dir', type=str, help='models for transcribing the voice messages into texts')
+args = parser.parse_args()
 
-bot = telebot.TeleBot(BOT_TOKEN)
-Model = chat_from_sys(bot)
+
+# Initialize your telegram bot.
+bot = telebot.TeleBot(args.bot_tok)
+Chat = chat_from_key(args.chat_tok)
+
+# Download and Prepare the Pretrained Models for transcribing the voice messages.
+download_models(args.voice_model_dir)
+encoder_path = f"{args.voice_model_dir}/encoder.int8.onnx"
+decoder_path = f"{args.voice_model_dir}/decoder.int8.onnx"
+config = WhisperConfig(
+    encoder_path,
+    decoder_path,
+)
+Transcriber = WhisperInference(config)
+
 
 # Handle '/start' and '/help'
 @bot.message_handler(commands=['help', 'start'])
-async def send_welcome(message):
-    await bot.reply_to(message, """\
-Hi there, I am Sahm.
-I am here to echo your kind words back to you. Just say anything nice and I'll say the exact same thing to you!\
-""")
+def start_mssg(message):
+    Chat.setup()
+    bot.reply_to(message, """\
+        Hi there, I am Sahm.
+        I 'm an AI assistant who can help you study!\
+    """)
+                                    
 
 @bot.message_handler(commands=["end"])
-async def send_welcome(message):
-    Model.setup()
-    await bot.reply_to(message, "released the conversation")
+def end_mssg(message):
+    Chat.setup()
+    bot.reply_to(message, "released the conversation")
+
 
 @bot.message_handler(func=lambda message: True)
-def echo_message(message):
+def repl_message(message):
     mssg_type = message.chat.type
     text = message.text
     if mssg_type == "group":
-        if BOT_USERNAME in text:
-            text = text.replace(BOT_USERNAME, "").strip()
+        if args.bot_name in text:
+            text = text.replace(args.bot_name, "").strip()
         else:
-            return
-    output_text = Model.invoke(text)
-    bot.reply_to(message, output_text)
+            return       
+    text = Chat.invoke(text)        
+    bot.reply_to(message, text)
+
+
+@bot.message_handler(content_types=['voice'])
+def repl_voice(message):
+    file_info = bot.get_file(message.voice.file_id)
+    downloaded_file = bot.download_file(file_info.file_path)
+    with open('sound.ogg', 'wb') as new_file:
+        new_file.write(downloaded_file)
+    text = Transcriber("sound.ogg")[0]
+    text = Chat.invoke(text)       
+    bot.reply_to(message, text)
 
 
 if __name__ == '__main__':
-   bot.polling()    
+   bot.polling()
+       
