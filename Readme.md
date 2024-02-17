@@ -20,9 +20,11 @@ pip install -r requirements.txt
 
 ## How to run your telgram bot:
 *you can use ***CLI*** to show your options*
-> python train.py -h   **To show the available command**
+> python train.py -h   **To show the available commands**
 
 *you should provide some **Parameters** in order for the script to work**
 > python tel.py --bot_tok <your_bot_token> --bot_name <your_bot_name> --chat_tok <your_openai_api_key> --voice_model_dir <the_directory_where_to_save_the_downloaded_transcriber>
 
-*This ***command*** will create and run your chatbot in `telegram` and after that you can use it freely.*
+you can learn how to create your telegram bot you can check this awosome tutorial in [here](https://youtu.be/vZtm1wuA2yc?si=XhFRrGcz3k-Uy3n8)
+
+*This *** bash command*** will create and run your chatbot in `telegram` and after that you can use it freely.*
