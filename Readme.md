@@ -1,12 +1,12 @@
-# Building a Telegram ChatBot 
-### This an implementation of a telegram Chatbot using Langchain and a Speech to text Whisper optimized for inference. 
+# Telegram ChatBot 
+### This an implementation of a telegram Chatbot using Langchain and an optimized ASR Whisper. 
 
 ## Features
-**ASR Model**: employing an optimized version of  Whisper ASR model for inference and deployment.
+**ASR Model**: employing an optimized version of  Whisper ASR model for faster inference and deployment.
 
-**LangChain and OpenAi**: Utilizing The powerful **LangChain** framework to create an easy to implement a chatbot using OpenAi API.
+**LangChain and OpenAi**: Utilizing The powerful **LangChain** framework to create and implement a chatbot using OpenAi API.
 
-**Deployment and Inference**: ONNX Runtime is utilized for efficient model inference.
+**Deployment and Inference**: ONNX Runtime is utilized for efficient model inference and deployment.
 
 
 ## Getting Started
