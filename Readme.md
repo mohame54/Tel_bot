@@ -28,4 +28,4 @@ pip install -r requirements.txt
 > python tel.py --bot_tok <your_bot_token> --bot_name <your_bot_name> --chat_tok <your_openai_api_key> --voice_model_dir <the_directory_where_to_save_the_downloaded_transcriber>
 
 
-*This *** bash command*** will create and run your chatbot in `telegram` and after that you can use it freely.*
+This **bash command** will create and run your chatbot in `telegram` and after that you can use it freely.
