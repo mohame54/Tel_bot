@@ -1,4 +1,4 @@
-langchain langchain-openai
+langchain-google-genai
 telebot
 transformers
 soundfile

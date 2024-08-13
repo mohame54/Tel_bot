@@ -202,7 +202,7 @@ def load_wav(file_path, tr_rate=16_000) -> Tuple[np.ndarray, int]:
 
 def download_models(cur_path):
     # If models already existed don't do it
-    files = os.listdir(f"{cur_path}/Pretrained")
+    files = os.listdir(f"{cur_path}")
     if not "encoder.int8.onnx" in files:
         print("Downloading the Encoder!") 
         wget.download("https://drive.google.com/u/0/uc?id=1---yRGFuksLXfxuW9KUTBdKEa7vV68Yv&export=download",f"{cur_path}/encoder.int8.onnx")
