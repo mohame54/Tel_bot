@@ -72,7 +72,6 @@ class ChatModel:
 def chat_from_key(api_key,**kwargs):
     os.environ['GOOGLE_API_KEY'] = api_key
     config  = ChatConfig(
-        api_key=api_key,
         **kwargs,
     )
     chat = ChatModel(config)   
