@@ -7,4 +7,5 @@ soundfile
 wget
 soxr
 numpy
+grpcio
 onnxruntime-gpu
