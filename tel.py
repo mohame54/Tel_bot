@@ -68,5 +68,6 @@ def repl_voice(message):
 
 
 if __name__ == '__main__':
+   print("Polling has begun!")
    bot.polling()
        

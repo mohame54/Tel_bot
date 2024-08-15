@@ -57,12 +57,12 @@ class Inference:
             mode: Language mode ("English" or "Arabic").
         """
         options = onnxruntime.SessionOptions()
-        providers =  ['CUDAExecutionProvider']
+        #providers =  ['CUDAExecutionProvider']
         options.graph_optimization_level = onnxruntime.GraphOptimizationLevel.ORT_ENABLE_ALL
         self.encoder = onnxruntime.InferenceSession(
-            encoder_path, sess_options=options, providers=providers)
+            encoder_path, sess_options=options,) #providers=providers)
         self.decoder = onnxruntime.InferenceSession(
-            decoder_path, sess_options=options, providers=providers)
+            decoder_path, sess_options=options,) #providers=providers)
         self._mode = mode
         self.reset()
        

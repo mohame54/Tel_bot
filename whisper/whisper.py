@@ -4,7 +4,7 @@ import soxr
 import soundfile as sf
 import numpy as np
 from dataclasses import dataclass
-import wget
+import gdown
 import os
 
 # LOCAL
@@ -201,12 +201,15 @@ def load_wav(file_path, tr_rate=16_000) -> Tuple[np.ndarray, int]:
 
 
 def download_models(cur_path):
+    ENCODER_ID = "1---yRGFuksLXfxuW9KUTBdKEa7vV68Yv"
+    DECODER_ID = "1-0chhKypgGvRb1-aLy6Kp7RIwaThNCbm"
     # If models already existed don't do it
     files = os.listdir(f"{cur_path}")
     if not "encoder.int8.onnx" in files:
         print("Downloading the Encoder!") 
-        wget.download("https://drive.google.com/u/0/uc?id=1---yRGFuksLXfxuW9KUTBdKEa7vV68Yv&export=download",f"{cur_path}/encoder.int8.onnx")
+        gdown.download(id=ENCODER_ID, output=f"{cur_path}/encoder.int8.onnx")
         
     if not "decoder.int8.onnx" in files:
         print("Downloading the Decoder!") 
-        wget.download('https://drive.google.com/u/0/uc?id=1-0chhKypgGvRb1-aLy6Kp7RIwaThNCbm&export=download&confirm=t&uuid=4e545755-2ec0-401b-af89-112a6b765ba4&at=AB6BwCA7FFgl0i0sZs5rUCAWCRPT:1702764844470',f'{cur_path}/decoder.int8.onnx')
+        gdown.download(id=DECODER_ID, output=f'{cur_path}/decoder.int8.onnx')
+        

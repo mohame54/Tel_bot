@@ -4,7 +4,7 @@ langchain-community
 telebot
 transformers
 soundfile
-wget
+gdown
 soxr
 numpy
 grpcio
