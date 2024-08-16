@@ -16,7 +16,7 @@ REMEMBER:
 """
 
 
-class BasePipeLine(abc.ABCMeta):
+class BasePipeLine(abc.ABC):
     def __init__(self, description:Optional[str]=""):
         self.description = description
 
@@ -35,6 +35,9 @@ class BasePipeLine(abc.ABCMeta):
     @abc.abstractmethod
     def __call__(self, *args, **kwargs):
         raise NotImplementedError
+
+    def setup(self):
+        self.llm.setup()    
     
 
 class SearchPipeline(BasePipeLine):
@@ -57,8 +60,14 @@ class SearchPipeline(BasePipeLine):
     
 
     def _check_answer(self, ai_mssg:str) -> str:
-        match = re.search(r'(?<=SEARCH_ARTICLE.*?<)([^<>]*)(?=>)', ai_mssg)
-        return match.group(1) if match else ""
+        if "<rules>" in ai_mssg and "</rules>" in ai_mssg:
+           ai_mssg = ai_mssg.replace("<rules>", "")
+           ai_mssg = ai_mssg.replace("</rules>", "")
+        if "SEARCH_ARTICLE" in ai_mssg:
+           match = re.search(r'<([^<>]*)>', ai_mssg)
+           if match:
+              return match.group(1)
+        return ""
     
     def __call__(self, user_query:str) -> str:
         ai_mssg = self.llm(user_query, save_hist=False)
@@ -72,10 +81,9 @@ class SearchPipeline(BasePipeLine):
                     content: {article_dict['content']}
                </article>
                answer the following <{user_query}>
+               Remember not to mention the article in your answer and treats it as knowledge you searched on the internet yourself.
             """    
             ai_mssg = self.llm(new_query)
         else:
             ai_mssg = self.llm(user_query)    
         return ai_mssg    
-
-

@@ -1,5 +1,5 @@
 import telebot
-from chat import chat_from_key
+from chat import SearchPipeline
 from whisper import WhisperConfig, WhisperInference, download_models
 import argparse
 
@@ -13,6 +13,7 @@ SAVE_CODE <script_name>: if the user asks you to generate code and you have the 
 </rules>
 REMEMBER:
   If the knowledge is provided for you somehow including from the user side this should be sufficient for you to generate an answer.
+  if you have to follow the rules you should only to answer with a keyword with the specified parameters.
 if you do have the knowledge you don't have to follow the rules and give a clear and concise answer unless the user asks you to generate code then you should follow the above rules.
 """
 
@@ -27,7 +28,7 @@ args = parser.parse_args()
 
 # Initialize your telegram bot.
 bot = telebot.TeleBot(args.bot_tok)
-Chat = chat_from_key(args.chat_tok, sys_prompt=SYS_P)
+Chat = SearchPipeline(args.chat_tok)
 
 # Download and Prepare the Pretrained Models for transcribing the voice messages.
 download_models(args.voice_model_dir)

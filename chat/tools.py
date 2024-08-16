@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 
 
-class BaseTool(abc.ABCMeta):
+class BaseTool(abc.ABC):
     def __init__(self, description:Optional[str]=""):
         self.description = description
 
