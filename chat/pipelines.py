@@ -60,9 +60,7 @@ class SearchPipeline(BasePipeLine):
     
 
     def _check_answer(self, ai_mssg:str) -> str:
-        if "<rules>" in ai_mssg and "</rules>" in ai_mssg:
-           ai_mssg = ai_mssg.replace("<rules>", "")
-           ai_mssg = ai_mssg.replace("</rules>", "")
+        ai_mssg = re.sub(r'</?rules>', '', ai_mssg)
         if "SEARCH_ARTICLE" in ai_mssg:
            match = re.search(r'<([^<>]*)>', ai_mssg)
            if match:
