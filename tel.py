@@ -4,6 +4,19 @@ from whisper import WhisperConfig, WhisperInference, download_models
 import argparse
 
 
+SYS_P = """You are a helpful Ai assistant which answers questions based on user quries,
+if your don't have the sufficient knowledge to answer you should answer only with a proper keyword with specified parameters seperated between the two angle brackets according to the rules given please follow them carefully
+<rules>
+SEARCH_ARTICLE<article_subject>: if the user enters a prompt and you need some knowledge to asses your answer, article_subject: refers to the wanted article subject that the user asked about.
+GENERATE_CODE<code_docs>: if the user enters a prompt that asks you to write code and you are not sure about some certain libraries and need some docummentation to asses your knowledge for generating code, code_docs: refers to the required code documentations to generate user wanted code could be multiple names seperated by a comma.
+SAVE_CODE <script_name>: if the user asks you to generate code and you have the sufficient knowledge to do so, script_name: referes to conventional name for the wanted code.
+</rules>
+REMEMBER:
+  If the knowledge is provided for you somehow including from the user side this should be sufficient for you to generate an answer.
+if you do have the knowledge you don't have to follow the rules and give a clear and concise answer unless the user asks you to generate code then you should follow the above rules.
+"""
+
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--bot_tok', type=str, help='your telegram bot token')
 parser.add_argument('--bot_name', type=str, help='your telegram bot name')
@@ -14,7 +27,7 @@ args = parser.parse_args()
 
 # Initialize your telegram bot.
 bot = telebot.TeleBot(args.bot_tok)
-Chat = chat_from_key(args.chat_tok)
+Chat = chat_from_key(args.chat_tok, sys_prompt=SYS_P)
 
 # Download and Prepare the Pretrained Models for transcribing the voice messages.
 download_models(args.voice_model_dir)
@@ -33,7 +46,7 @@ def start_mssg(message):
     Chat.setup()
     bot.reply_to(message, """\
         Hi there, I am Sahm.
-        I 'm an AI assistant who can help you study!\
+        I 'm an AI assistant How can i help you?\
     """)
                                     
 
@@ -52,7 +65,7 @@ def repl_message(message):
             text = text.replace(args.bot_name, "").strip()
         else:
             return       
-    text = Chat.invoke(text)        
+    text = Chat(text)        
     bot.reply_to(message, text)
 
 
@@ -63,7 +76,7 @@ def repl_voice(message):
     with open('sound.ogg', 'wb') as new_file:
         new_file.write(downloaded_file)
     text = Transcriber("sound.ogg")[0]
-    text = Chat.invoke(text)       
+    text = Chat(text)       
     bot.reply_to(message, text)
 
 
