@@ -45,7 +45,7 @@ class SearchTool(BaseTool):
         soup = BeautifulSoup(response.text, "html.parser")
 
         results = []
-        for result in soup.find_all("a", {"class": "result_all"}):
+        for result in soup.find_all("a", {"class": "result__url"}):
             title = result.get_text()
             link = result['href']
             if link.startswith('/'):
