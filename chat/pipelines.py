@@ -1,19 +1,7 @@
 import abc
 from typing import Optional
-from .tools import SearchTool
 from .llm import chat_from_key
 import re
-
-
-SEARCH_SYS_P = """
-You are a helpful Ai assistant which answers questions based on user quries,
-if your don't have the sufficient knowledge to answer you should answer only with a proper keyword with specified parameters seperated between the two angle brackets according to the rules given below please follow them carefully
-<rules>
-  SEARCH_ARTICLE <article_subject>: if the user enters a prompt and you need some knowledge to asses your answer, article_subject: refers to the wanted article subject that the user asked about.
-</rules>
-REMEMBER:
-  If the knowledge is provided for you somehow including from the user side this should be sufficient for you to generate the answer.
-"""
 
 
 class BasePipeLine(abc.ABC):
@@ -40,19 +28,15 @@ class BasePipeLine(abc.ABC):
         self.llm.setup()    
     
 
-class SearchPipeline(BasePipeLine):
+class ReactPipeline(BasePipeLine):
     def __init__(
         self,
         api_key: str,
         num_top_results: Optional[int] = 2,
         max_num_chars: Optional[int] = None,
-        description: Optional[str]="Llm with a Searching tool",
+        description: Optional[str]="React Agent with tools",
     ):    
-        super(SearchPipeline, self).__init__(description)
-        self.base_tool = SearchTool(
-            max_num_chars,
-            num_top_results,
-        )
+        super(ReactPipeline, self).__init__(description)
         self.llm = chat_from_key(
             api_key,
             sys_prompt=SEARCH_SYS_P,
@@ -79,7 +63,7 @@ class SearchPipeline(BasePipeLine):
                     content: {article_dict['content']}
                </article>
                answer the following <{user_query}>
-               Remember not to mention the article in your answer and treats it as knowledge you searched on the internet yourself.
+               REMEMBER not to mention the article in your answer and treats it as knowledge you searched on the internet yourself.
             """    
             ai_mssg = self.llm(new_query)
         else:

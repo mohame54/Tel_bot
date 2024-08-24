@@ -1,40 +1,23 @@
-import abc
-from typing import Optional, List, Dict
+from .base import BaseTool
 import requests
+from typing import List, Optional, Dict
 from bs4 import BeautifulSoup
+from ..utils import (
+    SEARCH_DOC,
+    add_docstring
+)
 
-
-class BaseTool(abc.ABC):
-    def __init__(self, description:Optional[str]=""):
-        self.description = description
-
-    def __str__(self):
-        desc = "Tool"
-        if self.description != "":
-            desc = desc + f"for:{self.description}"
-        return desc
-    
-    def __repr__(self):
-        desc = "Tool"
-        if self.description != "":
-            desc = desc + f"for:{self.description}"
-        return desc
-    
-    @abc.abstractmethod
-    def __call__(self, *args, **kwargs):
-        raise NotImplementedError
-    
 
 class SearchTool(BaseTool):
     def __init__(
         self,
         max_num_chars: Optional[int] = None,
-        num_top_results: Optional[int] = 2,
+        tool_name: Optional[str] = None,
         description="Searching",
     ):
         super(SearchTool, self).__init__(description)   
         self.max_num_chars = max_num_chars
-        self.num_top_results = num_top_results
+        self.tool_name = "search_tool" if tool_name is None else tool_name
 
     def _scrape_link(self, url: str) -> str:
         
@@ -62,7 +45,7 @@ class SearchTool(BaseTool):
         soup = BeautifulSoup(response.text, "html.parser")
 
         results = []
-        for result in soup.find_all("a", {"class": "result__a"}):
+        for result in soup.find_all("a", {"class": "result_all"}):
             title = result.get_text()
             link = result['href']
             if link.startswith('/'):
@@ -71,10 +54,15 @@ class SearchTool(BaseTool):
             
         return results
     
-    def __call__(self, query:str) -> List[Dict[str, str]]:
+    @add_docstring(SEARCH_DOC)
+    def __call__(
+        self,
+        query:str,
+        num_top_results: Optional[int] = 2
+    ) -> List[Dict[str, str]]:
         search_results = self._search(query=query)
-        summarized_results = []
-        search_results = search_results[:self.num_top_results]
+        summarized_results: List[Dict[str, str]] = []
+        search_results = search_results[:num_top_results]
         for result in search_results:  
             content = self._scrape_link(url=result["link"])
             summarized_results.append(
