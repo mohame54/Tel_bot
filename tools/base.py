@@ -53,7 +53,7 @@ class ToolKit:
     
     @property
     def _get_tools_instructions(self) -> str:
-        line = """""" * 50
+        line = """-""" * 50
         instructions = """"""
         for name, tool in self.name2tool.items():
             instruct = f"""
