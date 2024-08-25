@@ -35,19 +35,11 @@ SEARCH_DOC =  """
         
         >>> search_tool = SearchTool()
         >>> results = search_tool(query="Python programming")
-        >>> for result in results:
-        >>>     print(result["title"])
-        >>>     print(result["link"])
-        >>>     print(result["content"])
         
         Specifying a custom number of top results:
         
         >>> search_tool = SearchTool()
         >>> results = search_tool(query="Machine learning", num_top_results=3)
-        >>> for result in results:
-        >>>     print(result["title"])
-        >>>     print(result["link"])
-        >>>     print(result["content"])
 """
 
 
