@@ -48,7 +48,7 @@ SEARCH_DOC =  """
 """
 
 
-PYTHON_DOC =  """
+PYTHON_EX_DOC =  """
     Executes the provided Python code string and returns the output or error.
 
     Args:

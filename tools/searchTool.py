@@ -2,7 +2,7 @@ from .base import BaseTool
 import requests
 from typing import List, Optional, Dict
 from bs4 import BeautifulSoup
-from ..utils import (
+from . import (
     SEARCH_DOC,
     add_docstring
 )
