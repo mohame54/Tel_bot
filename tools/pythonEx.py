@@ -22,7 +22,7 @@ def _run_placeHolder(
     sys.stderr = io.StringIO()
 
     try:
-        exec(code_str)
+        exec(code_str, locals())
         # Store the output and errors in the provided lists
         output_list.append(sys.stdout.getvalue())
         error_list.append(sys.stderr.getvalue())
@@ -90,7 +90,7 @@ class PythonEx(BaseTool):
 
         if ";" in code:
             code = code.replace(";", "\n")
-        return str(code)
+        return f"""{str(code)}"""
     
     @add_docstring(PYTHON_EX_DOC)
     def __call__(self, code_str: str) -> str:
@@ -99,3 +99,4 @@ class PythonEx(BaseTool):
         if os.cpu_count() > 1:
            return self._run_thread_code(code_str)
         return self._save_run_code(code_str)
+    

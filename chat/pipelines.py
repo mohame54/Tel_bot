@@ -80,7 +80,7 @@ class ReactPipeline(BasePipeLine):
             if agent_response['Action'].lower() == 'finish':
                 final_answer = agent_response['Final Answer']
                 if logging:
-                   print("\n")
+                   print(f"\n {final_answer}")
                 return final_answer
             
             if agent_response['Action'] not in self.toolkit.tool_names:
