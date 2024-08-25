@@ -80,4 +80,5 @@ def add_docstring(doc):
             return func(*args, **kwargs)
         wrapper.__doc__ = doc
         return wrapper
+    decorator.__doc__ = doc
     return decorator
