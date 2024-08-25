@@ -82,7 +82,7 @@ class PythonEx(BaseTool):
         
         return str(code)
     
-    add_docstring(PYTHON_EX_DOC)
+    @add_docstring(PYTHON_EX_DOC)
     def __call__(self, code_str: str) -> str:
         code_str = self._parse_code(code_str)
         return self._run(code_str)
