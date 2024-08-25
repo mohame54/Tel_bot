@@ -127,6 +127,3 @@ class ReactPipeline(BasePipeLine):
         response = self.llm(query)
         return self._parse_response(response)
     
-    def parse(self, response: str):
-        if ':' in response:
-            key, value = response.split(':', 1)
