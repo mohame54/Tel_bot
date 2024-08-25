@@ -22,13 +22,13 @@ class BaseTool(abc.ABC):
         self.description = description
         self.tool_name = tool_name
     def __str__(self):
-        desc = "Tool"
+        desc = "Tool "
         if self.description != "":
             desc = desc + f"for:{self.description}"
         return desc
     
     def __repr__(self):
-        desc = "Tool"
+        desc = "Tool "
         if self.description != "":
             desc = desc + f"for:{self.description}"
         return desc
@@ -72,6 +72,6 @@ class ToolKit:
         line = SEP_LINE
         instructions = """"""
         for name, tool in self.name2tool.items():
-            instruct = INSTRUCT_LINE.format(name, tool.get_doc)
+            instruct = INSTRUCT_LINE.format(name=name, doc=tool.get_doc)
             instructions += instruct + line
         return instructions   
