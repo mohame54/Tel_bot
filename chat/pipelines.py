@@ -2,8 +2,7 @@ import abc
 from typing import Optional, Dict
 from .llm import chat_from_key
 import re
-from . import REACT_SYS_P
-from tools import ToolKit
+from tools import ToolKit, REACT_SYS_P, has_multiple_arguments
 import warnings
 
 
@@ -86,7 +85,7 @@ class ReactPipeline(BasePipeLine):
             
             if agent_response['Action'] not in self.toolkit.tool_names:
                 raise Exception(f"Unknown action: {agent_response['Action']}")
-
+            
             tool_result = self.toolkit(agent_response['Action'], agent_response['Action Input'])
     
             if len(tool_result) == 0 or tool_result == None:

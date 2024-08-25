@@ -1,5 +1,5 @@
 from functools import wraps
-
+import inspect
 
 REACT_SYS_P = """
 You are an AI agent designed to answer questions through an iterative process. You have access to the following tools:
@@ -38,26 +38,31 @@ Example workflow:
 Let's begin!
 """
 
-
-SEARCH_DOC =  """
-    Executes a web search for the given query and returns summarized content 
-    from the top search results.
+SEARCH_DOC = """
+    Executes a search query and retrieves content from the top search results.
     sometimes returns empty research content so you could increase the num of top results
     and adjust the content length as wanted.
 
-    Args:
-        query (str): The search query to be used for the web search.
-        num_top_results (Optional[int]): The number of top search results 
-            to retrieve and summarize. Defaults to 2.
-        content_length (Optional[int]): the content length limitation because sometimes
-            the tool returns empty search content. Default to 50.
-    Returns:
-        List[Dict[str, str]]: A list of dictionaries, each containing:
-            - "title" (str): The title of the search result.
-            - "link" (str): The URL of the search result.
-            - "content" (str): The summarized content of the linked web page.
 
-      Examples:
+    Args:
+        query (str): The search query to be executed.
+        text_only (Optional[bool]): If True, returns only the text content from the search results.
+                                    If False, returns a list of dictionaries with titles, links, and content.
+                                    Defaults to True.
+        num_top_results (Optional[int]): The number of top search results to retrieve. Defaults to 2.
+        content_length (Optional[int]): The minimum content length required for a result to be included.
+                                        Defaults to 400 characters.
+
+    Returns:
+        Union[List[Dict[str, str]], str]: 
+            - If `text_only` is True, returns a single string containing the concatenated text content from the 
+              top search results.
+            - If `text_only` is False, returns a list of dictionaries where each dictionary contains:
+                - "title": The title of the search result.
+                - "link": The URL of the search result.
+                - "content": The scraped content of the search result.
+
+    Examples:
         Basic usage with the default number of top results:
         
         >>> search_tool = SearchTool()
@@ -66,8 +71,9 @@ SEARCH_DOC =  """
         Specifying a custom number of top results:
         
         >>> search_tool = SearchTool()
-        >>> results = search_tool(query="Machine learning", num_top_results=3)
-"""
+        >>> results = search_tool(query="Machine learning", num_top_results=3)            
+    """
+
 
 
 PYTHON_EX_DOC =  """
@@ -104,3 +110,9 @@ def add_docstring(doc):
         return wrapper
     decorator.__doc__ = doc
     return decorator
+
+
+def has_multiple_arguments(func):
+    sig = inspect.signature(func)
+    parameters = sig.parameters
+    return len(parameters) > 1

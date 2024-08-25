@@ -57,8 +57,9 @@ class ToolKit:
            return self.name2tool[tool_idx]
         return self.tools[tool_idx]
     
-    def __call__(self, tool_name: str, *toolArgs, **toolKwargs):
-        return self.name2tool[tool_name](*toolArgs, **toolKwargs)
+    def __call__(self, tool_name: str, tool_inputs:str):
+        tool_inputs = eval(tool_inputs.replace("\n", ""))
+        return self.name2tool[tool_name](**tool_inputs)
     
     def append(self, tool):
         self.name2tool.update(

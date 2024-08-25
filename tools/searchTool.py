@@ -1,6 +1,6 @@
 from .base import BaseTool
 import requests
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Union
 from bs4 import BeautifulSoup
 from . import (
     SEARCH_DOC,
@@ -58,12 +58,14 @@ class SearchTool(BaseTool):
     def __call__(
         self,
         query:str,
+        text_only: Optional[bool] = True,
         num_top_results: Optional[int] = 2,
-        content_length: Optional[int] = 50,
-    ) -> List[Dict[str, str]]:
+        content_length: Optional[int] = 400,
+    ) -> Union[List[Dict[str, str]], str]:
         search_results = self._search(query=query)
         summarized_results: List[Dict[str, str]] = []
         search_results = search_results[:num_top_results]
+        all_content = ""
         for result in search_results:  
             content = self._scrape_link(url=result["link"])
             # Filter the links which have the content length bigger than content_length
@@ -76,5 +78,8 @@ class SearchTool(BaseTool):
                     "content": content
                 }
             )       
+            all_content+="\t \n" + content
+        if text_only:
+          return all_content    
         return summarized_results
     
