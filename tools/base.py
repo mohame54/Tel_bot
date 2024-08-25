@@ -50,6 +50,7 @@ class ToolKit:
                 tool.tool_name: tool for tool in tools 
             }
         self.tools = tools    
+        self.tool_names = ",".join([t.tool_name for t in tools])
 
     def __getitem__(self, tool_idx):
         if isinstance(tool_idx, str):
@@ -74,4 +75,10 @@ class ToolKit:
         for name, tool in self.name2tool.items():
             instruct = INSTRUCT_LINE.format(name=name, doc=tool.get_doc)
             instructions += instruct + line
-        return instructions   
+        return instructions  
+
+    def __str__(self) -> str:
+        return f"[{self.tool_names}]"
+
+    def __repr__(self) -> str:
+        return f"[{self.tool_names}]"
