@@ -3,9 +3,13 @@ from typing import Optional, List
 
 
 class BaseTool(abc.ABC):
-    def __init__(self, description:Optional[str]=""):
+    def __init__(
+        self,
+        tool_name:str,
+        description:Optional[str]="",
+    ):
         self.description = description
-
+        self.tool_name = tool_name
     def __str__(self):
         desc = "Tool"
         if self.description != "":
@@ -22,7 +26,8 @@ class BaseTool(abc.ABC):
     def __call__(self, *args, **kwargs):
         raise NotImplementedError
     
-    def __doc__(self):
+    @property
+    def get_doc(self):
         return self.__call__.__doc__
 
 
@@ -58,7 +63,7 @@ class ToolKit:
         for name, tool in self.name2tool.items():
             instruct = f"""
                 tool_name: {name}
-                documentation: {tool.__doc__}
+                documentation: {tool.get_doc()}
             """
             instructions += instruct + line
         return instructions.strip()    

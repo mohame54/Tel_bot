@@ -1,5 +1,5 @@
 from .base import BaseTool
-from typing import List, Optional
+from typing import List, Optional, Union
 import io
 import sys
 import threading
@@ -41,8 +41,8 @@ class PythonEx(BaseTool):
         tool_name:Optional[str] = None,
         description: str | None = "Python Code Excution"
     ):
-        super().__init__(description)
-        self.tool_name = "PythonEx" if tool_name is None else tool_name
+        tool_name = "PythonEx" if tool_name is None else tool_name
+        super(PythonEx, self).__init__(tool_name, description)
 
 
     def _run(self, code_str:str) -> str:
@@ -63,7 +63,7 @@ class PythonEx(BaseTool):
         captured_errors = errors[0] if errors else "" 
         return f"\n Error: \n{captured_errors}"
     
-    def _parse_code(self, code: str) -> str:
+    def _parse_code(self, code: Union[str, List[str]]) -> str:
 
         if isinstance(code, list):
             code = "\n".join(code)

@@ -15,9 +15,9 @@ class SearchTool(BaseTool):
         tool_name: Optional[str] = None,
         description="Searching",
     ):
-        super(SearchTool, self).__init__(description)   
+        tool_name = "search_tool" if tool_name is None else tool_name
+        super(SearchTool, self).__init__(tool_name, description)   
         self.max_num_chars = max_num_chars
-        self.tool_name = "search_tool" if tool_name is None else tool_name
 
     def _scrape_link(self, url: str) -> str:
         
