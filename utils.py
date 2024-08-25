@@ -15,13 +15,15 @@ REMEMBER:
 SEARCH_DOC =  """
     Executes a web search for the given query and returns summarized content 
     from the top search results.
+    sometimes returns empty research content so you could increase the num of top results
+    and adjust the content length as wanted.
 
     Args:
         query (str): The search query to be used for the web search.
         num_top_results (Optional[int]): The number of top search results 
             to retrieve and summarize. Defaults to 2.
         content_length (Optional[int]): the content length limitation because sometimes
-            the tool returns empty search content
+            the tool returns empty search content. Default to 50.
     Returns:
         List[Dict[str, str]]: A list of dictionaries, each containing:
             - "title" (str): The title of the search result.
