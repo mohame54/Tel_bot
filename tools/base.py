@@ -1,6 +1,17 @@
 import abc
 from typing import Optional, List
 
+SEP_LINE = f"""
+{"-" * 100}
+        """
+
+
+INSTRUCT_LINE = """
+tool_name: {name}
+documentation:
+            {doc}
+            """
+
 
 class BaseTool(abc.ABC):
     def __init__(
@@ -57,13 +68,10 @@ class ToolKit:
         self.tools.append(tool)    
     
     @property
-    def _get_tools_instructions(self) -> str:
-        line = """-""" * 50
+    def get_tools_instructions(self) -> str:
+        line = SEP_LINE
         instructions = """"""
         for name, tool in self.name2tool.items():
-            instruct = f"""
-                tool_name: {name}
-                documentation: {tool.get_doc()}
-            """
+            instruct = INSTRUCT_LINE.format(name, tool.get_doc)
             instructions += instruct + line
-        return instructions.strip()    
+        return instructions   
