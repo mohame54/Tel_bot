@@ -2,7 +2,7 @@ import abc
 from typing import Optional, Dict
 from .llm import chat_from_key
 import re
-from tools import ToolKit, REACT_SYS_P, has_multiple_arguments
+from tools import ToolKit, REACT_SYS_P
 import warnings
 
 
@@ -57,14 +57,6 @@ class ReactPipeline(BasePipeLine):
             sys_prompt=sys_prompt,
         )
 
-    def _check_answer(self, ai_mssg:str) -> str:
-        ai_mssg = re.sub(r'</?rules>', '', ai_mssg)
-        if "SEARCH_ARTICLE" in ai_mssg:
-           match = re.search(r'<([^<>]*)>', ai_mssg)
-           if match:
-              return match.group(1)
-        return ""
-    
     def __call__(
         self,
         user_query:str,
