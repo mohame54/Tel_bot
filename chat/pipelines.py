@@ -69,7 +69,7 @@ class ReactPipeline(BasePipeLine):
         self,
         user_query:str,
         max_iters: Optional[int] = 5,
-        logging: Optional[bool] = False,
+        logging: Optional[bool] = True,
     ) -> str:
         next_prompt = user_query
         for _ in range(max_iters):
