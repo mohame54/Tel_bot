@@ -58,13 +58,17 @@ class SearchTool(BaseTool):
     def __call__(
         self,
         query:str,
-        num_top_results: Optional[int] = 2
+        num_top_results: Optional[int] = 2,
+        content_length: Optional[int] = 50,
     ) -> List[Dict[str, str]]:
         search_results = self._search(query=query)
         summarized_results: List[Dict[str, str]] = []
         search_results = search_results[:num_top_results]
         for result in search_results:  
             content = self._scrape_link(url=result["link"])
+            # Filter the links which have the content length bigger than content_length
+            if len(content.strip()) <= content_length:
+                continue
             summarized_results.append(
                 {
                     "title": result["title"],

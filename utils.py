@@ -20,7 +20,8 @@ SEARCH_DOC =  """
         query (str): The search query to be used for the web search.
         num_top_results (Optional[int]): The number of top search results 
             to retrieve and summarize. Defaults to 2.
-
+        content_length (Optional[int]): the content length limitation because sometimes
+            the tool returns empty search content
     Returns:
         List[Dict[str, str]]: A list of dictionaries, each containing:
             - "title" (str): The title of the search result.
