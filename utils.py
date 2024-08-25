@@ -10,7 +10,7 @@ IMPORTANT: This is an ITERATIVE PROCESS. You will go through multiple steps befo
 Follow this format EXACTLY for each iteration:
 Thought: [Your reasoning about the current state and what to do next]
 Action: [One of: {tool_names}]
-Action Input: [Parameters for the action they could be args or key_word_args seperated by two arrows () like a function call (you make one action Input each iteration)]
+Action Input: [Parameters for the action they must be key_word_args seperated in a dict format like a function call (you make one action Input each iteration)]
 
 CRITICAL RULES:
 1. You operate in a loop. Each iteration, you provide ONLY Thought, Action, and Action Input.
