@@ -1,6 +1,7 @@
 from functools import wraps
 import inspect
 
+
 REACT_SYS_P = """
 You are an AI agent designed to answer questions through an iterative process. You have access to the following tools:
 {tools_and_role}
@@ -60,19 +61,8 @@ SEARCH_DOC = """
             - If `text_only` is False, returns a list of dictionaries where each dictionary contains:
                 - "title": The title of the search result.
                 - "link": The URL of the search result.
-                - "content": The scraped content of the search result.
-
-    Examples:
-        Basic usage with the default number of top results:
-        
-        >>> search_tool = SearchTool()
-        >>> results = search_tool(query="Python programming")
-        
-        Specifying a custom number of top results:
-        
-        >>> search_tool = SearchTool()
-        >>> results = search_tool(query="Machine learning", num_top_results=3)            
-    """
+                - "content": The scraped content of the search result.   
+"""
 
 
 
@@ -86,18 +76,6 @@ PYTHON_EX_DOC =  """
     Returns:
         str: The output of the executed code if successful, or the error 
                 message if an exception occurred during execution.
-
-    Examples:
-        >>> tool = PythonEx()
-        >>> output = tool('print("Hello, World!")')
-        >>> print(output)
-        Output: 
-        Hello, World!
-
-        >>> error = tool('raise ValueError("An error occurred!")')
-        >>> print(error)
-        Error: 
-        An error occurred!
 """
 
 

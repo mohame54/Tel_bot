@@ -43,6 +43,9 @@ class ReactPipeline(BasePipeLine):
         super(ReactPipeline, self).__init__(description)
         self.toolkit = toolkit
         self._setup(api_key, example_workflow)
+
+    def setup(self):
+        self.llm.setup()
     
     def _setup(self, api_key: str, example_workflow: Optional[str] = ""):
         instuctions = self.toolkit.get_tools_instructions

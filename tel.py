@@ -1,5 +1,5 @@
 import telebot
-from chat import SearchPipeline
+from workflow import AgenticChatWorkflow
 from whisper import WhisperConfig, WhisperInference, download_models
 import argparse
 
@@ -28,7 +28,7 @@ args = parser.parse_args()
 
 # Initialize your telegram bot.
 bot = telebot.TeleBot(args.bot_tok)
-Chat = SearchPipeline(args.chat_tok)
+Chat = AgenticChatWorkflow(args.chat_tok)
 
 # Download and Prepare the Pretrained Models for transcribing the voice messages.
 download_models(args.voice_model_dir)
