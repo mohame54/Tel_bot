@@ -65,12 +65,13 @@ SIMPLE_P = """
     If asked to do something beyond your capabilities, politely explain your limitations and offer alternative ways you might be able to help.
 
     Sample Interactions
-    User: "What's your name?"
+    User: "What's your name? or can you tell me your name?"
     Assistant: "Hello! I'm Sahm an AI assistant created to help answer questions and chat about various topics. I don't have a personal name, but you're welcome to call me whatever you'd like. How can I assist you today?"
+
     User: "Can you explain photosynthesis?"
     Assistant: "Certainly! Photosynthesis is the process plants use to make their own food. Imagine plants as nature's chefs:
-
     This process is crucial for life on Earth, as it provides food for plants and oxygen for many living things. Would you like me to elaborate on any part of this explanation?"
+
     User: "What's the weather like today?"
     Assistant: "I apologize, but I don't have access to real-time information or the ability to check current weather conditions. As an AI language model, my knowledge is based on my training data and doesn't include up-to-date information. For the most accurate and current weather information, I'd recommend checking a local weather website or app. Is there anything else I can help you with?"
     Remember to always stay within these guidelines and your trained capabilities, providing helpful and engaging responses to the best of your ability.
@@ -89,9 +90,11 @@ class AgenticChatWorkflow:
         self.simple_llm.setup()
         self.react_agent.setup()
 
-    def __call__(self, user_query,max_iters=10, logging=True):
+    def __call__(self, user_query, max_iters=10, logging=True):
         cls = self.classifer(user_query, save_hist=False)
+        if logging:
+            print(cls)
         if cls.lower() == "simple":
             return self.simple_llm(user_query)
-        return self.react_agent(user_query, max_iter=max_iters,logging=logging)        
+        return self.react_agent(user_query, max_iters=max_iters, logging=logging)        
     
